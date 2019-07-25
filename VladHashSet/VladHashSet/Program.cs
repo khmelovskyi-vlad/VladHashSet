@@ -17,7 +17,7 @@ namespace VladHashSet
             {
                 var latitude = Convert.ToInt32(Console.ReadLine());
                 var longitude = Convert.ToInt32(Console.ReadLine());
-                VladHashSet vladHashSet = new VladHashSet(latitude, longitude);
+                VladHashSet<int> vladHashSet = new VladHashSet<int>(latitude, longitude);
                 if (vladHashSet.FindHash(HashCodeArray, HashSets))
                 {
                     Console.WriteLine($"Latitude = {latitude}, longitude = {longitude}");

@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace VladHashSet
 {
-    class VladHashSet
+    class VladHashSet<TElement>
     {
-        public VladHashSet(int latitude, int longitude)
+        public VladHashSet(TElement latitude, TElement longitude)
         {
             this.Latitude = latitude;
             this.Longitude = longitude;
             hashCode = GetHashCodes();
-            ArrayWithCoordinate = new int[2];
+            ArrayWithCoordinate = new TElement[2];
             ArrayWithHashCode = new int[77];
         }
-        public int Latitude { get; set; }
-        public int Longitude { get; set; }
+        public TElement Latitude { get; set; }
+        public TElement Longitude { get; set; }
         int hashCode;
-        public int[] ArrayWithCoordinate { get; set; }
+        public TElement[] ArrayWithCoordinate { get; set; }
         public int[] ArrayWithHashCode { get; set; }
         public int GetHashCodes()
         {
             return (int)( Convert.ToInt32(Latitude) + Convert.ToInt32(Longitude));
         }
-        public bool FindHash(int[][] HashCodeArray, int[][] HashSets)
+        public bool FindHash(int[][] HashCodeArray, TElement[][] HashSets)
         {
             for (int i = 0; i < 77; i++)
             {
@@ -46,7 +46,7 @@ namespace VladHashSet
             }
             return false;
         }
-        public (int[][] HashSets, int[][] HashCodeArray,  int index) PushInHashCodeArray(int[][] HashSets, int[][] HashCodeArray,  int index)
+        public (TElement[][] HashSets, int[][] HashCodeArray,  int index) PushInHashCodeArray(TElement[][] HashSets, int[][] HashCodeArray,  int index)
         {
             ArrayWithCoordinate[0] = Latitude;
             ArrayWithCoordinate[1] = Longitude;
@@ -64,14 +64,14 @@ namespace VladHashSet
             Console.WriteLine(hashCode);
             return (HashSets, HashCodeArray, index);
         }
-        public bool Show(int[][] HashSets)
+        public bool Show(TElement[][] HashSets)
         {
             var i = 0;
             while (true)
             {
                 try
                 {
-                    if (HashSets[i][0] == Latitude && HashSets[i][1] == Longitude)
+                    if (HashSets[i][0].ToString()  == Latitude.ToString() && HashSets[i][1].ToString() == Longitude.ToString())
                     {
                         return true;
                     }
