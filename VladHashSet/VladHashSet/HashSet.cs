@@ -13,16 +13,14 @@ namespace VladHashSet
             hashSet = new List<HashBox>[uint.MaxValue / maxUIntDivider];
         }
         private List<HashBox>[] hashSet;
-
         const int maxUIntDivider = 65537;
+        HashBox hashBox;
+        int indexList;
 
         public void Add(TElement value)
         {
-            HashBox hashBox = new HashBox(value, value.GetHashCode());
-
-            var indexList = value.GetHashCode() / maxUIntDivider;
-
-            if(hashSet[indexList] == null)
+            NewHashBoxAndIndexList(value);
+            if (hashSet[indexList] == null)
             {
                 hashSet[indexList] = new List<HashBox>();
                 hashSet[indexList].Add(hashBox);
@@ -41,8 +39,11 @@ namespace VladHashSet
         }
         public bool Contains(TElement value)
         {
-            HashBox hashBox = new HashBox(value, value.GetHashCode());
-            var indexList = value.GetHashCode() / maxUIntDivider;
+            NewHashBoxAndIndexList(value);
+            if (hashSet[indexList] == null)
+            {
+                return false;
+            }
             foreach (var existedHashBox in hashSet[indexList])
             {
                 if (existedHashBox.HashCode == hashBox.HashCode && existedHashBox.Value.Equals(hashBox.Value))
@@ -54,16 +55,24 @@ namespace VladHashSet
         }
         public void Remove(TElement value)
         {
-            HashBox hashBox = new HashBox(value, value.GetHashCode());
-            var indexList = value.GetHashCode() / maxUIntDivider;
-
+            NewHashBoxAndIndexList(value);
+            if (hashSet[indexList] == null)
+            {
+                return;
+            }
             foreach (var existedHashBox in hashSet[indexList])
             {
                 if (existedHashBox.HashCode == hashBox.HashCode && existedHashBox.Value.Equals(hashBox.Value))
                 {
                     hashSet[indexList].Remove(existedHashBox);
+                    return;
                 }
             }
+        }
+        private void NewHashBoxAndIndexList(TElement value)
+        {
+            hashBox = new HashBox(value, value.GetHashCode());
+            indexList = value.GetHashCode() / maxUIntDivider;
         }
 
         private struct HashBox
